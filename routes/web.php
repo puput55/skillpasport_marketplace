@@ -18,13 +18,14 @@ Route::get('/beranda', function () {
 
 // =================== LOGIN / LOGOUT ===================
 Route::get('/login', [UserController::class, 'loginForm'])->name('login');
-Route::post('/login', [UserController::class, 'loginProcess'])->name('login.process');
+Route::post('/login', [UserController::class, 'login'])->name('login.process');
 Route::get('/logout', [UserController::class, 'logout'])->name('logout');
 
 // =================== ADMIN ===================
-Route::middleware(['checkRole:admin'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth','checkRole:admin'])->prefix('admin')->name('admin.')->group(function () {
 
-    Route::get('/', [AdminController::class, 'index'])->name('home');
+    Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
+
 
     // User
     Route::get('/user', [UserController::class, 'index'])->name('user.index');
@@ -68,7 +69,7 @@ Route::middleware(['checkRole:admin'])->prefix('admin')->name('admin.')->group(f
 });
 
 // =================== MEMBER / TOKO ===================
-Route::middleware(['checkRole:member'])->prefix('member')->name('member.')->group(function () {
+Route::middleware(['auth', 'checkRole:member'])->prefix('member')->name('member.')->group(function () {
     Route::get('/', function () {
         return view('member-toko');
     })->name('home');

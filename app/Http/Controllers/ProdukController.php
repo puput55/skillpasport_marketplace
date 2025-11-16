@@ -36,10 +36,10 @@ class ProdukController extends Controller
      */
     public function store(Request $request)
     {
-        //
         $request->validate([
             'id_kategori' => 'required',
             'nama_produk' => 'required|string|max:100',
+            'gambar_produk' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'harga' => 'required|numeric',
             'stok' => 'required|integer',
             'deskripsi' => 'nullable|string',
@@ -47,17 +47,29 @@ class ProdukController extends Controller
             'id_toko' => 'required',
         ]);
 
+        $filename = null;
+
+        if ($request->hasFile('gambar_produk')) {
+            $gambar = $request->file('gambar_produk');
+            $filename = time() . '_' . $gambar->getClientOriginalName();
+            $gambar->storeAs('gambar', $filename, 'public');
+        }
+
         Produk::create([
             'id_kategori' => $request->id_kategori,
             'nama_produk' => $request->nama_produk,
+            'gambar_produk' => $filename,
             'harga' => $request->harga,
             'stok' => $request->stok,
             'deskripsi' => $request->deskripsi,
             'tanggal_upload' => $request->tanggal_upload,
             'id_toko' => $request->id_toko,
         ]);
-        return redirect()->route('admin.produk.index')->with('success', 'Produk berhasil ditambahkan.');
+
+        return redirect()->route('admin.produk.index')
+            ->with('success', 'Produk berhasil ditambahkan.');
     }
+
 
     /**
      * Display the specified resource.
@@ -88,6 +100,7 @@ class ProdukController extends Controller
         $request->validate([
             'id_kategori' => 'required',
             'nama_produk' => 'required|string|max:100',
+            'gambar_produk' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'harga' => 'required|numeric',
             'stok' => 'required|integer',
             'deskripsi' => 'nullable|string',
@@ -95,9 +108,18 @@ class ProdukController extends Controller
             'id_toko' => 'required',
         ]);
         $produk = Produk::findOrFail($id);
+
+        if ($request->hasFile('gambar_produk')) {
+        $gambar = $request->file('gambar_produk');
+        $filename = time() . '_' . $gambar->getClientOriginalName();
+        $gambar->storeAs('gambar', $filename, 'public');
+        $produk->gambar_produk = $filename;
+    }
+
         $produk->update([
             'id_kategori' => $request->id_kategori,
             'nama_produk' => $request->nama_produk,
+            'gambar_produk' => $produk->gambar_produk,
             'harga' => $request->harga,
             'stok' => $request->stok,
             'deskripsi' => $request->deskripsi,

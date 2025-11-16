@@ -1,7 +1,10 @@
 @extends('admin.template')
 @section('content')
-<div class="card shadow p-3" style="background-color:#e0d3ab; border-radius:10px;">
 
+<div class="card shadow p-3"
+     style="background-color:#ffffff; border-radius:10px; border:1px solid #dce3f0;">
+
+    {{-- Error --}}
     @if ($errors->any())
         <div class="alert alert-danger">
             <ul>
@@ -12,6 +15,7 @@
         </div>
     @endif
 
+    {{-- Success --}}
     @if (session('success'))
         <div class="alert alert-success alert-dismissible">
             {{ session('success') }}
@@ -19,15 +23,19 @@
         </div>
     @endif
 
-    <h4 style="color:#3b3b3b;">Edit Gambar Produk</h4>
+    {{-- HEADER --}}
+    <h4 style="color:#014288; font-weight:600;">Edit Gambar Produk</h4>
 
-    <form action="{{ route('admin.gambar.update', $gambar_produk->id_gambar) }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('admin.gambar.update', $gambar_produk->id_gambar) }}"
+          method="POST" enctype="multipart/form-data">
+
         @csrf
         @method('PUT')
 
+        {{-- Produk --}}
         <div class="mb-3">
-            <label class="form-label">Produk</label>
-            <select name="id_produk" class="form-select" required>
+            <label class="form-label" style="color:#014288;">Produk</label>
+            <select name="id_produk" class="form-select" style="border-color:#c7d7f2;" required>
                 <option value="">Pilih Produk</option>
                 @foreach ($produks as $produk)
                     <option value="{{ $produk->id_produk }}"
@@ -38,16 +46,31 @@
             </select>
         </div>
 
+        {{-- Nama Gambar --}}
         <div class="mb-3">
-            <label class="form-label">Nama Gambar</label>
-            <input type="text" name="nama_gambar" class="form-control"
-                   value="{{ $gambar_produk->nama_gambar }}" required>
+            <label class="form-label" style="color:#014288;">Nama Gambar</label>
+            <input type="text"
+                   name="nama_gambar"
+                   class="form-control"
+                   style="border-color:#c7d7f2;"
+                   value="{{ $gambar_produk->nama_gambar }}"
+                   required>
         </div>
 
-        <button type="submit" class="btn" style="background:#3b3b3b;color:#e0d3ab;">
+        {{-- BUTTONS --}}
+        <button type="submit"
+                class="btn"
+                style="background:#014288; color:#ffffff; border-radius:6px;">
             Perbarui
         </button>
-        <a href="{{ route('admin.gambar.index') }}" class="btn btn-secondary">Batal</a>
+
+        <a href="{{ route('admin.gambar.index') }}"
+           class="btn btn-secondary"
+           style="border-radius:6px;">
+            Batal
+        </a>
+
     </form>
 </div>
+
 @endsection

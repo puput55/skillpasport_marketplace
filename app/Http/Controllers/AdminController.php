@@ -20,5 +20,6 @@ class AdminController extends Controller
         $totalKategori = Kategori::count();
         $totalGambar = gambar_produk::count();
         return view('admin.dashboard', compact('totalUser', 'totalToko', 'totalProduk', 'totalKategori', 'totalGambar'));
+
     }
 }

@@ -12,38 +12,57 @@
     <style>
         body {
             margin: 0;
-            background-color: #f4f1e1;
+            /* background-color: #014288; Biru utama */
             font-family: Arial, sans-serif;
         }
 
         nav {
-            background-color: #f4f1e1;
+            background-color: white; /* Navbar putih */
             padding: 15px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
         }
 
         nav a {
             margin-left: 20px;
             text-decoration: none;
-            color: #655d4a;
+            color: #014288;
+            font-weight: 600;
         }
 
         nav a:hover {
-            color: black;
+            color: #012f66;
         }
 
-        .content {
-            min-height: calc(100vh - 70px);
-            padding: 20px;
+        .search-input {
+            background: #ffffff;
+            border: 1px solid #014288;
+            color: #014288;
+        }
+
+        .search-input::placeholder {
+            color: #7a99c5;
+        }
+
+        .btn-search {
+            background: #014288;
+            color: white;
+            font-weight: bold;
+        }
+
+        .btn-search:hover {
+            background: #01366c;
         }
 
         footer {
-            background-color: #f4f1e1;
+            background-color: white;
             text-align: center;
             padding: 15px;
             font-weight: bold;
+            color: #014288;
+            box-shadow: 0 -2px 6px rgba(0,0,0,0.1);
         }
     </style>
 </head>
@@ -52,19 +71,22 @@
 
 <nav class="d-flex justify-content-between align-items-center">
 
-    <!-- LOGO -->
-    <div style="font-weight:bold; font-size:18px;">SSPLACESHOP</div>
+    <!-- LOGO + EMOJI -->
+    <div style="font-weight:bold; font-size:20px; color:#014288; display:flex; align-items:center; gap:8px;">
+        <span style="font-size:26px;">🧺</span>
+        SSPLACESHOP
+    </div>
 
-    <!-- SEARCH BAR (dipanjangin) -->
+    <!-- SEARCH BAR -->
     <form action="/search" method="GET"
           class="d-flex"
-          style="gap: 10px; width: 700px;">
+          style="gap: 5px; width: 1000px;">
 
-        <input type="text" name="q" class="form-control"
+        <input type="text" name="q" class="form-control search-input"
                placeholder="Cari produk..."
-               style="background:#fff4d1; border:1px solid #c8b997; width:100%;">
+               style="width:100%;">
 
-        <button class="btn btn-sm" style="background:#655d4a; color:white;">
+        <button class="btn btn-sm btn-search">
             <i class="fa fa-search"></i>
         </button>
     </form>
@@ -77,16 +99,12 @@
     </div>
 </nav>
 
-<!-- CONTENT AREA -->
+@yield('content')
 
-    @yield('content')
-
-<!-- FOOTER -->
-<footer>
+{{-- <footer>
     © 2025 Marketplace by Kamu
-</footer>
+</footer> --}}
 
-<!-- BOOTSTRAP JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>

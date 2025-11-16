@@ -9,22 +9,30 @@
 
     <style>
         body {
-            background-color: #f4f1e1;
+            background-color: #014288; /* biru utama */
             font-family: Arial, sans-serif;
         }
         .card {
-            background-color: #e0d3ab;
+            background-color: white; /* tidak pakai cream */
             border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
         }
         .btn-login {
-            background: #3b3b3b;
-            color: #e0d3ab;
+            background: #014288;
+            color: white;
             font-weight: bold;
         }
         .btn-login:hover {
-            opacity: 0.8;
+            background: #013566;
+        }
+        h3 {
+            color: #014288;
+            font-weight: bold;
+        }
+        label {
+            color: #014288;
+            font-weight: 600;
         }
     </style>
 </head>
@@ -39,7 +47,17 @@
             <div class="alert alert-danger">{{ session('error') }}</div>
         @endif
 
-        <form action="{{ route('login.process') }}" method="POST">
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul class="mb-0">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        <form action="{{ route('login.process') }}" method="POST" enctype="multipart/form-data">
             @csrf
 
             <label class="form-label">Username</label>
