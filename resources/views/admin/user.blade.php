@@ -59,18 +59,39 @@
                     <td>{{ $user->username }}</td>
                     <td>{{ $user->password }}</td>
                     <td>{{ $user->role }}</td>
+                    <td>
+                        @if($user->role === 'member')
+                            @if($user->status === 'pending')
+                                <span class="badge bg-warning text-dark">Pending</span>
+                            @else
+                                <span class="badge bg-success">Active</span>
+                            @endif
+                        @else
+                            -
+                        @endif
+                    </td>
+
                     <td class="text-center">
                         <div class="d-flex justify-content-center gap-2">
+                            @if($user->role === 'member' && $user->status === 'pending')
+                                <a href="{{ route('user.approve', $user->id) }}"
+                                class="btn btn-sm text-white"
+                                style="background-color:#28a745;"
+                                onclick="return confirm('Yakin ingin mengaktifkan member ini?');">
+                                    <i class="fa fa-check"></i> ACC
+                                </a>
+                            @endif
 
                             <a href="{{ route('admin.user.edit', $user->id) }}"
-                               class="btn btn-sm text-white"
-                               style="background-color:#014288;">
+                            class="btn btn-sm text-white"
+                            style="background-color:#014288;">
                                 <i class="fa fa-edit"></i> Edit
                             </a>
 
+
                             <form action="{{ route('admin.user.destroy', $user->id) }}"
-                                  method="POST"
-                                  onsubmit="return confirm('Yakin ingin menghapus user ini?');">
+                                method="POST"
+                                onsubmit="return confirm('Yakin ingin menghapus user ini?');">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit"

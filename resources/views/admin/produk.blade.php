@@ -20,7 +20,7 @@
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h4 style="color:#014288;">Manajemen Produk</h4>
 
-            <a href="{{ route('admin.produk.create') }}"
+            <a href="{{ route('member.produk.create') }}"
                class="btn"
                style="background-color:#014288; color:#ffffff; border-radius:6px;">
                 <i class="fa fa-plus"></i> Tambah Produk
@@ -61,14 +61,14 @@
                             <td>
                                 @if($produk->gambar_produk)
                                     <img src="{{ asset('storage/gambar/' . $produk->gambar_produk) }}"
-                                        style="width:100px; height:auto; border-radius:5px;">
+                                        style="width:120px; height:120px; border-radius:5px;">
                                 @else
                                     Tidak ada gambar
                                 @endif
                             </td>
                             <td>Rp {{ number_format($produk->harga, 0, ',', '.') }}</td>
                             <td>{{ $produk->stok }}</td>
-                            <td>{{ $produk->deskripsi }}</td>
+                            <td>{{ Str::limit($produk->deskripsi, 50,'...') }}</td>
                             <td>{{ \Carbon\Carbon::parse($produk->tanggal_upload)->format('d-m-Y') }}</td>
                             <td>{{ $produk->toko->nama_toko ?? '-' }}</td>
 
@@ -76,14 +76,14 @@
                                 <div class="d-flex justify-content-center gap-2">
 
                                     {{-- Tombol Edit --}}
-                                    <a href="{{ route('admin.produk.edit', $produk->id_produk) }}"
+                                    <a href="{{ route('member.produk.edit', $produk->id_produk) }}"
                                        class="btn sm"
                                        style="background-color:#014288; color:#ffffff; border-radius:6px;">
                                         <i class="fa fa-edit"></i> Edit
                                     </a>
 
                                     {{-- Tombol Hapus --}}
-                                    <form action="{{ route('admin.produk.destroy', $produk->id_produk) }}"
+                                    <form action="{{ route('member.produk.destroy', $produk->id_produk) }}"
                                           method="POST"
                                           onsubmit="return confirm('Apakah Anda yakin ingin menghapus produk ini?');">
 

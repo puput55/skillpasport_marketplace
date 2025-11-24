@@ -11,7 +11,7 @@
         </div>
 
         {{-- FORM --}}
-        <form action="{{ route('admin.produk.store') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('member.produk.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
 
             <div class="mb-3">
@@ -77,7 +77,7 @@
                 Tambah
             </button>
 
-            <a href="{{ route('admin.produk.index') }}"
+            <a href="{{ route('member.produk.index') }}"
                class="btn"
                style="background-color:#d9534f; color:#ffffff; border-radius:6px;">
                 Batal

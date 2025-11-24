@@ -21,11 +21,12 @@ class User extends Authenticatable
         'username',
         'password',
         'role',
+        'status',
     ];
 
     public function tokos()
     {
-        return $this->hasMany(Toko::class, 'id_user');
+        return $this->hasOne(Toko::class, 'id_user');
     }
 
     public function produks()

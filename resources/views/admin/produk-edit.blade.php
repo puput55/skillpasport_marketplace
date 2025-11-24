@@ -29,7 +29,7 @@
             <h4 style="color:#014288; font-weight:600;">Edit Produk</h4>
         </div>
 
-        <form action="{{ route('admin.produk.update', $produk->id_produk) }}"
+        <form action="{{ route('member.produk.update', $produk->id_produk) }}"
               method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
@@ -102,7 +102,7 @@
                 Perbarui
             </button>
 
-            <a href="{{ route('admin.produk.index') }}"
+            <a href="{{ route('member.produk.index') }}"
                class="btn btn-secondary"
                style="border-radius:6px;">
                 Batal

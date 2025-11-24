@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Kategori;
 use App\Models\Produk;
 use App\Models\Toko;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class ProdukController extends Controller
@@ -28,7 +29,8 @@ class ProdukController extends Controller
         $produks = Produk::all();
         $tokos = Toko::all();
         $kategoris = Kategori::all();
-        return view('admin.produk-create',compact('produks','kategoris','tokos'));
+        $members = User::all();
+        return view('produk-create',compact('produks','kategoris','tokos','members'));
     }
 
     /**
@@ -50,9 +52,9 @@ class ProdukController extends Controller
         $filename = null;
 
         if ($request->hasFile('gambar_produk')) {
-            $gambar = $request->file('gambar_produk');
-            $filename = time() . '_' . $gambar->getClientOriginalName();
-            $gambar->storeAs('gambar', $filename, 'public');
+            $gambar_produk = $request->file('gambar_produk');
+            $filename = time() . '_' . $gambar_produk->getClientOriginalName();
+            $gambar_produk->storeAs('gambar', $filename, 'public');
         }
 
         Produk::create([
@@ -66,7 +68,7 @@ class ProdukController extends Controller
             'id_toko' => $request->id_toko,
         ]);
 
-        return redirect()->route('admin.produk.index')
+        return redirect()->route('member.toko')
             ->with('success', 'Produk berhasil ditambahkan.');
     }
 
@@ -110,9 +112,9 @@ class ProdukController extends Controller
         $produk = Produk::findOrFail($id);
 
         if ($request->hasFile('gambar_produk')) {
-        $gambar = $request->file('gambar_produk');
-        $filename = time() . '_' . $gambar->getClientOriginalName();
-        $gambar->storeAs('gambar', $filename, 'public');
+        $gambar_produk = $request->file('gambar_produk');
+        $filename = time() . '_' . $gambar_produk->getClientOriginalName();
+        $gambar_produk->storeAs('gambar', $filename, 'public');
         $produk->gambar_produk = $filename;
     }
 
@@ -126,7 +128,7 @@ class ProdukController extends Controller
             'tanggal_upload' => $request->tanggal_upload,
             'id_toko' => $request->id_toko,
         ]);
-        return redirect()->route('admin.produk.index')->with('success', 'Produk berhasil diupdate.');
+        return redirect()->route('member.produk.index')->with('success', 'Produk berhasil diupdate.');
     }
 
     /**
@@ -137,6 +139,28 @@ class ProdukController extends Controller
         //
         $produk = Produk::findOrFail($id);
         $produk->delete();
-        return redirect()->route('admin.produk.index')->with('success', 'Produk berhasil dihapus.');
+        return redirect()->route('member.produk.index')->with('success', 'Produk berhasil dihapus.');
+    }
+        // SEMUA PRODUK
+    public function publicIndex(Request $request)
+    {
+        $kategoris = Kategori::all();
+        $kategoriId = $request->kategori;
+
+        if ($kategoriId) {
+            $produks = Produk::where('id_kategori', $kategoriId)->get();
+        } else {
+            $produks = Produk::all();
+        }
+
+        return view('produk', compact('produks', 'kategoris'));
+    }
+
+    // PRODUK DETAIL
+    public function show($id_produk)
+    {
+        $produk = Produk::findOrFail($id_produk);
+
+        return view('produk-show', compact('produk'));
     }
 }

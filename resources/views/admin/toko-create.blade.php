@@ -42,6 +42,13 @@
                        placeholder="Masukkan nama toko" required>
             </div>
 
+            <select name="id_user" class="form-control" required>
+                <option value="">-- Pilih Pemilik --</option>
+                @foreach($members as $member)
+                    <option value="{{ $member->id_user }}">{{ $member->nama }} ({{ $member->username }})</option>
+                @endforeach
+            </select>
+
             <div class="mb-3">
                 <label class="form-label" style="color:#014288;">Deskripsi</label>
                 <textarea name="deskripsi" id="deskripsi" cols="30" rows="5"
@@ -66,6 +73,7 @@
                 <textarea name="alamat" id="alamat" cols="30" rows="5"
                           class="form-control" required></textarea>
             </div>
+            <input type="hidden" name="id_user" value="{{ auth()->id() }}">
 
             <button type="submit"
                 class="btn"

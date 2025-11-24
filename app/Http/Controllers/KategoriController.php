@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Kategori;
+use App\Models\Produk;
 use Illuminate\Http\Request;
 
 class KategoriController extends Controller
@@ -83,6 +84,25 @@ class KategoriController extends Controller
         //
         $kategori = Kategori::findOrFail($id);
         $kategori->delete();
+
         return redirect()->route('admin.kategori.index')->with('success', 'Kategori berhasil dihapus.');
     }
+
+      public function publicKategori()
+    {
+        $kategoris = Kategori::all();
+        return view('kategori', compact('kategoris'));
+    }
+
+    public function show($id_kategori)
+    {
+        // Ambil kategori berdasarkan ID
+        $kategori = Kategori::findOrFail($id_kategori);
+
+        // Ambil semua produk yang terkait (hasMany)
+        $produks = $kategori->produks;
+
+        return view('kategori-show', compact('kategori', 'produks'));
+    }
+
 }

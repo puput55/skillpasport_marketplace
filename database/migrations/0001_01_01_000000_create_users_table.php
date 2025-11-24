@@ -18,6 +18,10 @@ return new class extends Migration
             $table->string('username', 20)->unique();
             $table->string('password', 100);
             $table->enum('role', ['admin', 'member'])->default('member');
+
+            // Tambah kolom status untuk approval member
+            $table->enum('status', ['pending', 'active'])->default('pending');
+
             $table->timestamps();
         });
     }

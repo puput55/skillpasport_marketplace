@@ -40,6 +40,7 @@
                 <tr>
                     <th>ID</th>
                     <th>Nama Toko</th>
+                    <th>Pemilik</th>
                     <th>Deskripsi</th>
                     <th>Gambar</th>
                     <th>Kontak</th>
@@ -59,13 +60,20 @@
                 @foreach($tokos as $toko)
                 <tr>
                     <td>{{ $toko->id_toko }}</td>
-                    <td>{{ $toko->nama_toko }}</td>
-                    <td>{{ $toko->deskripsi }}</td>
 
+                    <td>{{ $toko->nama_toko }}</td>
+                    <td>{{ $toko->user->nama }}</td>
+
+                    {{-- Batasi maksimal 50 karakter --}}
+                    <td>
+                        {{ Str::limit($toko->deskripsi, 50, '...') }}
+                    </td>
+
+                    {{-- Gambar seragam --}}
                     <td>
                         @if($toko->gambar)
                             <img src="{{ asset('storage/gambar/' . $toko->gambar) }}"
-                                 style="width:100px; height:auto; border-radius:5px;">
+                                 style="width:120px; height:120px; object-fit:cover; border-radius:8px;">
                         @else
                             Tidak ada gambar
                         @endif
@@ -94,14 +102,15 @@
                                         style="background-color:#8b0000; color:white;">
                                     <i class="fa fa-trash"></i> Hapus
                                 </button>
-
                             </form>
+
                         </div>
                     </td>
                 </tr>
                 @endforeach
                 @endif
             </tbody>
+
         </table>
 
     </div>

@@ -36,6 +36,15 @@
                        value="{{ $toko->nama_toko }}" required>
             </div>
 
+            <select name="id_user" class="form-control" required>
+                <option value="">-- Pilih Pemilik --</option>
+                @foreach($members as $member)
+                    <option value="{{ $member->id_user }}" {{ $toko->id_user == $member->id_user ? 'selected' : '' }}>
+                        {{ $member->nama }} ({{ $member->username }})
+                    </option>
+                @endforeach
+            </select>
+
             <div class="mb-3">
                 <label class="form-label" style="color:#014288;">Deskripsi</label>
                 <textarea name="deskripsi" id="deskripsi" cols="30" rows="10"

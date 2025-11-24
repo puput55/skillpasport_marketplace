@@ -9,20 +9,36 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 // =================== HALAMAN UMUM ===================
-Route::get('/', function () {
-    return view('beranda');
-});
-Route::get('/beranda', function () {
-    return view('beranda');
-})->name('beranda');
+Route::get('/', [UserController::class, 'beranda'])->name('beranda');
+Route::get('/beranda', [UserController::class, 'beranda'])->name('beranda');
+
+// PRODUK
+Route::get('/produk', [ProdukController::class, 'publicIndex'])->name('produk.public');
+Route::get('/produk/detail/{id}', [ProdukController::class, 'show'])->name('produk.show');
+
+// KATEGORI
+Route::get('/kategori', [KategoriController::class, 'publicKategori'])->name('kategori.public');
+Route::get('/kategori/{id}', [KategoriController::class, 'show'])->name('kategori.show');
+
+
 
 // =================== LOGIN / LOGOUT ===================
 Route::get('/login', [UserController::class, 'loginForm'])->name('login');
 Route::post('/login', [UserController::class, 'login'])->name('login.process');
 Route::get('/logout', [UserController::class, 'logout'])->name('logout');
+Route::get('/user/approve/{id}', [UserController::class, 'approve'])->name('user.approve');
+
+
+// =================== REGISTRASI MEMBER ===================
+Route::get('/register-member', [UserController::class, 'registerForm'])->name('register.member');
+Route::post('/register-member', [UserController::class, 'registerMember'])->name('register.member.process');
+
 
 // =================== ADMIN ===================
 Route::middleware(['auth','checkRole:admin'])->prefix('admin')->name('admin.')->group(function () {
+
+    // TOKO
+    // Route::get('/toko/{id}', [TokoController::class, 'show'])->name('toko.show');
 
     Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
 
@@ -52,12 +68,6 @@ Route::middleware(['auth','checkRole:admin'])->prefix('admin')->name('admin.')->
     Route::delete('/kategori/{id}', [KategoriController::class, 'destroy'])->name('kategori.destroy');
 
     // Produk
-    Route::get('/produk', [ProdukController::class, 'index'])->name('produk.index');
-    Route::get('/produk/create', [ProdukController::class, 'create'])->name('produk.create');
-    Route::post('/produk', [ProdukController::class, 'store'])->name('produk.store');
-    Route::get('/produk/{id}/edit', [ProdukController::class, 'edit'])->name('produk.edit');
-    Route::put('/produk/{id}', [ProdukController::class, 'update'])->name('produk.update');
-    Route::delete('/produk/{id}', [ProdukController::class, 'destroy'])->name('produk.destroy');
 
     // Gambar Produk
     Route::get('/gambar', [GambarProdukController::class, 'index'])->name('gambar.index');
@@ -68,9 +78,19 @@ Route::middleware(['auth','checkRole:admin'])->prefix('admin')->name('admin.')->
     Route::delete('/gambar/{id}', [GambarProdukController::class, 'destroy'])->name('gambar.destroy');
 });
 
-// =================== MEMBER / TOKO ===================
-Route::middleware(['auth', 'checkRole:member'])->prefix('member')->name('member.')->group(function () {
-    Route::get('/', function () {
-        return view('member-toko');
-    })->name('home');
-});
+Route::middleware(['auth','checkRole:member'])->prefix('member')->name('member.')->group(function () {
+    Route::get('/dashboard', [UserController::class, 'memberIndex'])->name('member');
+    Route::get('/toko', [TokoController::class, 'memberToko'])->name('toko');
+    Route::get('/produk', [ProdukController::class, 'memberProduk'])->name('produk');
+    Route::get('/produk/create', [ProdukController::class, 'create'])->name('produk.create');
+    Route::get('/produk', [ProdukController::class, 'index'])->name('produk.index');
+    Route::get('/produk/{id}/edit', [ProdukController::class, 'edit'])->name('produk.edit');
+    Route::put('/produk/{id}', [ProdukController::class, 'update'])->name('produk.update');
+    Route::delete('/produk/{id}', [ProdukController::class, 'destroy'])->name('produk.destroy');
+    Route::post('/produk', [ProdukController::class, 'store'])->name('produk.store');
+    });
+
+
+// =================== KATEGORI USER ===================
+Route::get('/kategori', [KategoriController::class, 'publicKategori'])->name('kategori.public');
+

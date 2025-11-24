@@ -29,7 +29,7 @@
             <h4 style="color:#014288; font-weight:600;">Edit User</h4>
         </div>
 
-        <form action="{{ route('admin.user.update', $user->id_user) }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('admin.user.update', $user->id) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
 

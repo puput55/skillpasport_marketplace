@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Produk;
 use App\Models\Toko;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -13,39 +15,38 @@ class TokoController extends Controller
      */
     public function index()
     {
-        //
-        $tokos = Toko::all();
+        $tokos = Toko::with('user')->get();
         return view('admin.toko', compact('tokos'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
-        return view('admin.toko-create');
+        $members = User::where('role','member')->where('status','active')->get();
+        return view('admin.toko-create', compact('members'));
+    }
+    public function mentok(){
+        $data['toko'] = Toko::where('id_user', Auth::user()->id)->first();
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
+        // dd($request->all());
         $request->validate([
             'nama_toko' => 'required|string|max:100',
-            'deskripsi' => 'nullable|string',
-            'gambar' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'kontak_toko' => 'nullable|string|max:13',
-            'alamat' => 'nullable|string',
+            'deskripsi' => 'required|string',
+            'gambar' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'kontak_toko' => 'required|string|max:13',
+            'alamat' => 'required|string',
+            'id_user' => 'required|'
         ]);
 
         if ($request->hasFile('gambar')) {
-        $gambar   = $request->file('gambar');
-        $filename = time() . '-' . $request->nama_toko . '.' . $gambar->getClientOriginalExtension();
+        $gambar = $request->file('gambar');
+        $filename = time() . '_' . $request->nama_toko . '-' . $gambar->getClientOriginalName();
         $gambar->storeAs('gambar', $filename, 'public');
-        } else {
-        $filename = null;
+        }
+        else {
+            $filename = null; // gunakan gambar lama jika tidak ada yang diupload
         }
 
         Toko::create([
@@ -54,69 +55,58 @@ class TokoController extends Controller
             'gambar' => $filename,
             'kontak_toko' => $request->kontak_toko,
             'alamat' => $request->alamat,
-            'id_user' => 1, // atau Auth::id() jika sudah login
+            'id_user' => $request->id_user,
         ]);
 
-        return redirect()->route('admin.toko.index')->with('success', 'Toko berhasil ditambahkan.');
+        return redirect()->route('admin.toko.index')->with('success','Toko berhasil ditambahkan.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    // public function show(Toko $toko)
-    // {
-    //     //
-    // }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Toko $toko, $id)
+    public function edit($id)
     {
-        //
         $toko = Toko::findOrFail($id);
-        return view('admin.toko-edit', compact('toko'));
+        $members = User::where('role','member')->where('status','active')->get();
+        return view('admin.toko-edit', compact('toko','members'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, $id)
     {
+        $toko = Toko::findOrFail($id);
+
         $request->validate([
             'nama_toko' => 'required|string|max:100',
-            'deskripsi' => 'nullable|string',
-            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'kontak_toko' => 'nullable|string|max:13',
-            'alamat' => 'nullable|string',
+            'deskripsi' => 'required|string',
+            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'kontak_toko' => 'required|string|max:13',
+            'alamat' => 'required|string',
+            'id_user' => 'required|exists:users,id_user'
         ]);
 
-        $toko = Toko::findOrFail($id);
+        $data = $request->only(['nama_toko','deskripsi','kontak_toko','alamat','id_user']);
 
-        // kalau ada gambar baru diupload
-         if ($request->hasFile('gambar')) {
-            $gambar = time() . '.' . $request->gambar->extension();
-            $request->gambar->move(public_path('storage/gambar'), $gambar);
-            $toko->gambar = $gambar;
+        if ($request->hasFile('gambar')) {
+        $gambar = $request->file('gambar');
+        $filename = time() . '_' . $request->nama_toko . '-' . $gambar->getClientOriginalName();
+        $gambar->storeAs('gambar', $filename, 'public');
+        }
+        else {
+            $filename = null; // gunakan gambar lama jika tidak ada yang diupload
         }
 
-        $toko->nama_toko = $request->nama_toko;
-        $toko->deskripsi = $request->deskripsi;
-        $toko->kontak_toko = $request->kontak_toko;
-        $toko->alamat = $request->alamat;
-        $toko->save();
+        $toko->update($data);
 
-        return redirect()->route('admin.toko.index')->with('success', 'Toko berhasil diperbarui.');
+        return redirect()->route('admin.toko.index')->with('success','Toko berhasil diperbarui.');
     }
+    public function memberToko(){
+    $toko = Toko::where('id_toko', Auth::id())->first();
+    $product = Produk::all();
+    return view('member-toko', compact('toko','product'));
+}
 
-    /**
-     * Remove the specified resource from storage.
-     */
+
     public function destroy($id)
     {
-        //
         $toko = Toko::findOrFail($id);
         $toko->delete();
-        return redirect()->route('admin.toko.index')->with('success', 'Toko berhasil dihapus.');
+        return redirect()->route('admin.toko.index')->with('success','Toko berhasil dihapus.');
     }
 }

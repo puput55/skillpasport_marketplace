@@ -61,31 +61,66 @@
 </head>
 <body>
 
-    <div class="sidebar">
-        <h4>Admin Toko</h4>
+<div class="sidebar">
+
+    {{-- ================= TAMPILAN ADMIN ================= --}}
+    @if(Auth::user()->role == 'admin')
+
+        <h4>Admin Panel</h4>
 
         <a href="{{route('admin.dashboard')}}">
             <i class="fa-solid fa-gauge"></i> Dashboard
         </a>
+
         <a href="{{route('admin.user.index')}}">
             <i class="fa-solid fa-users"></i> Manajemen User
         </a>
+
         <a href="{{route('admin.toko.index')}}">
             <i class="fa-solid fa-store"></i> Manajemen Toko
         </a>
+
         <a href="{{route('admin.kategori.index')}}">
             <i class="fa-solid fa-tags"></i> Kategori Produk
         </a>
-        <a href="{{route('admin.produk.index')}}">
+
+        {{-- <a href="{{route('admin.produk.index')}}">
             <i class="fa-solid fa-box-open"></i> Manajemen Produk
-        </a>
+        </a> --}}
+
         <a href="{{route('admin.gambar.index')}}">
             <i class="fa-solid fa-image"></i> Gambar Produk
         </a>
+
         <a href="{{route('logout')}}" onclick="return confirm('Yakin ingin keluar?')">
             <i class="fa-solid fa-right-from-bracket"></i> Logout
         </a>
-    </div>
+
+    {{-- ================= TAMPILAN MEMBER ================= --}}
+    @elseif(Auth::user()->role == 'member')
+
+        <h4>Member Area</h4>
+
+        <a href="{{route('member.member')}}">
+            <i class="fa-solid fa-gauge"></i> Dashboard Member
+        </a>
+
+        <a href="{{route('member.toko')}}">
+            <i class="fa-solid fa-store"></i> Toko Saya
+        </a>
+
+        <a href="{{route('member.produk.index')}}">
+            <i class="fa-solid fa-box-open"></i> Produk Saya
+        </a>
+
+        <a href="{{route('logout')}}">
+            <i class="fa-solid fa-right-from-bracket"></i> Logout
+        </a>
+
+    @endif
+
+</div>
+
 
     <div class="content">
         @yield('content')

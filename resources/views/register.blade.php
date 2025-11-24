@@ -3,27 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Registrasi Member</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
         body {
-            background-color: #014288; /* biru utama */
+            background-color: #014288;
             font-family: Arial, sans-serif;
         }
         .card {
             background-color: white;
             border-radius: 12px;
             padding: 25px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
         }
-        .btn-login {
+        .btn-register {
             background: #014288;
             color: white;
             font-weight: bold;
         }
-        .btn-login:hover {
+        .btn-register:hover {
             background: #013566;
         }
         h3 {
@@ -34,14 +34,6 @@
             color: #014288;
             font-weight: 600;
         }
-        .register-link {
-            color: #014288;
-            font-weight: bold;
-            text-decoration: none;
-        }
-        .register-link:hover {
-            text-decoration: underline;
-        }
     </style>
 </head>
 
@@ -49,10 +41,10 @@
 <div class="container d-flex justify-content-center align-items-center" style="height:100vh;">
     <div class="card col-md-4">
 
-        <h3 class="text-center mb-3">Login</h3>
+        <h3 class="text-center mb-3">Registrasi Member</h3>
 
-        @if (session('error'))
-            <div class="alert alert-danger">{{ session('error') }}</div>
+        @if (session('success'))
+            <div class="alert alert-success">{{ session('success') }}</div>
         @endif
 
         @if ($errors->any())
@@ -65,26 +57,27 @@
             </div>
         @endif
 
-        <form action="{{ route('login.process') }}" method="POST">
+        <form action="{{ route('register.member.process') }}" method="POST">
             @csrf
 
+            <label class="form-label">Nama Lengkap</label>
+            <input type="text" name="nama" class="form-control mb-3" required placeholder="Masukkan nama lengkap">
+
+            <label class="form-label">Kontak</label>
+            <input type="number" name="kontak" class="form-control mb-3" placeholder="Masukkan nomor kontak">
+
             <label class="form-label">Username</label>
-            <input type="text" name="username" class="form-control mb-3" required>
+            <input type="text" name="username" class="form-control mb-3" required placeholder="Masukkan username">
 
             <label class="form-label">Password</label>
-            <input type="password" name="password" class="form-control mb-3" required>
+            <input type="password" name="password" class="form-control mb-3" required placeholder="Masukkan password">
 
-            <button class="btn btn-login w-100 mb-3">Login</button>
+            <button class="btn btn-register w-100">Daftar</button>
+
         </form>
 
-        <!-- Tambahan link registrasi -->
-        <p class="text-center">
-            Belum punya akun?
-            <a href="{{ route('register.member') }}" class="register-link">Daftar Member</a>
-        </p>
-        <p class="text-center">
-            Kembali ke halaman awal
-            <a href="{{ route('beranda') }}" class="register-link">Klik disinir</a>
+        <p class="text-center mt-3">
+            Sudah punya akun? <a href="{{ route('login') }}" style="color:#014288; font-weight:bold;">Login</a>
         </p>
 
     </div>
