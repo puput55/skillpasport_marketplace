@@ -7,6 +7,8 @@ use App\Models\Produk;
 use App\Models\Toko;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use function auth;
 
 class ProdukController extends Controller
 {
@@ -84,7 +86,7 @@ class ProdukController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Produk $produk, $id)
+    public function edit($id)
     {
         //
         $produk = Produk::findOrFail($id);
@@ -112,11 +114,11 @@ class ProdukController extends Controller
         $produk = Produk::findOrFail($id);
 
         if ($request->hasFile('gambar_produk')) {
-        $gambar_produk = $request->file('gambar_produk');
-        $filename = time() . '_' . $gambar_produk->getClientOriginalName();
-        $gambar_produk->storeAs('gambar', $filename, 'public');
-        $produk->gambar_produk = $filename;
-    }
+            $gambar_produk = $request->file('gambar_produk');
+            $filename = time() . '_' . $gambar_produk->getClientOriginalName();
+            $gambar_produk->storeAs('gambar', $filename, 'public');
+            $produk->gambar_produk = $filename;
+        }
 
         $produk->update([
             'id_kategori' => $request->id_kategori,
@@ -128,29 +130,30 @@ class ProdukController extends Controller
             'tanggal_upload' => $request->tanggal_upload,
             'id_toko' => $request->id_toko,
         ]);
-        return redirect()->route('member.produk.index')->with('success', 'Produk berhasil diupdate.');
+        return redirect()->route('produk.index')->with('success', 'Produk berhasil diupdate.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Produk $produk, $id)
+    public function destroy($id)
     {
-        //
         $produk = Produk::findOrFail($id);
         $produk->delete();
-        return redirect()->route('member.produk.index')->with('success', 'Produk berhasil dihapus.');
+        return redirect()->route('produk.index')->with('success', 'Produk berhasil dihapus.');
     }
-        // SEMUA PRODUK
+    // SEMUA PRODUK
     public function publicIndex(Request $request)
     {
         $kategoris = Kategori::all();
         $kategoriId = $request->kategori;
 
         if ($kategoriId) {
-            $produks = Produk::where('id_kategori', $kategoriId)->get();
+            $produks = Produk::where('id_kategori', $kategoriId)
+                ->orderBy('tanggal_upload', 'desc')
+                ->get();
         } else {
-            $produks = Produk::all();
+            $produks = Produk::orderBy('tanggal_upload', 'desc')->get();
         }
 
         return view('produk', compact('produks', 'kategoris'));
@@ -163,4 +166,5 @@ class ProdukController extends Controller
 
         return view('produk-show', compact('produk'));
     }
+
 }

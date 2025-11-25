@@ -1,4 +1,4 @@
-@extends('template')
+@extends('admin.template')
 
 @section('content')
 
@@ -91,7 +91,7 @@
     {{-- HEADER TOKO --}}
     <div class="store-header">
         <div class="store-info">
-            {{-- <img src="{{ asset('storage/gambar/'.$toko->gambar) }}" class="store-avatar" alt="Toko Avatar"> --}}
+            <img src="{{ asset('storage/gambar/'.$toko->gambar) }}" class="store-avatar" alt="Toko Avatar">
             <div>
                 <div class="store-name">{{ $toko->nama_toko }}</div>
                 <div class="store-contact">
@@ -134,7 +134,7 @@
 </div>
 
 {{-- LIVE SEARCH --}}
-{{-- <script>
+<script>
 const memberSearchInput = document.getElementById('memberSearchInput');
 const memberProducts = document.querySelectorAll('#memberProductList .product-item');
 
@@ -151,6 +151,6 @@ if(memberSearchInput && memberProducts.length > 0){
         });
     });
 }
-</script> --}}
+</script>
 
 @endsection

@@ -41,9 +41,9 @@ class TokoController extends Controller
         ]);
 
         if ($request->hasFile('gambar')) {
-        $gambar = $request->file('gambar');
-        $filename = time() . '_' . $request->nama_toko . '-' . $gambar->getClientOriginalName();
-        $gambar->storeAs('gambar', $filename, 'public');
+            $gambar = $request->file('gambar');
+            $filename = time() . '_' . $request->nama_toko . '-' . $gambar->getClientOriginalName();
+            $gambar->storeAs('gambar', $filename, 'public');
         }
         else {
             $filename = null; // gunakan gambar lama jika tidak ada yang diupload
@@ -78,29 +78,42 @@ class TokoController extends Controller
             'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'kontak_toko' => 'required|string|max:13',
             'alamat' => 'required|string',
-            'id_user' => 'required|exists:users,id_user'
+            'id_user' => 'required'
         ]);
 
-        $data = $request->only(['nama_toko','deskripsi','kontak_toko','alamat','id_user']);
+        $data = [
+            'nama_toko' => $request->nama_toko,
+            'deskripsi' => $request->deskripsi,
+            'kontak_toko' => $request->kontak_toko,
+            'alamat' => $request->alamat,
+            'id_user' => $request->id_user,
+        ];
 
         if ($request->hasFile('gambar')) {
-        $gambar = $request->file('gambar');
-        $filename = time() . '_' . $request->nama_toko . '-' . $gambar->getClientOriginalName();
-        $gambar->storeAs('gambar', $filename, 'public');
-        }
-        else {
-            $filename = null; // gunakan gambar lama jika tidak ada yang diupload
+            $gambar = $request->file('gambar');
+            $filename = time() . '_' . $request->nama_toko . '-' . $gambar->getClientOriginalName();
+            $gambar->storeAs('gambar', $filename, 'public');
+            $data['gambar'] = $filename;
+        } else {
+            // Keep the existing image if no new file uploaded
+            $data['gambar'] = $toko->gambar;
         }
 
         $toko->update($data);
 
         return redirect()->route('admin.toko.index')->with('success','Toko berhasil diperbarui.');
     }
-    public function memberToko(){
-    $toko = Toko::where('id_toko', Auth::id())->first();
-    $product = Produk::all();
-    return view('member-toko', compact('toko','product'));
-}
+
+    public function memberToko()
+    {
+        $toko = Toko::with('produks')->where('id_user', Auth::id())->first();
+
+        if (!$toko) {
+            return redirect()->back()->with('error', 'Anda belum membuat toko.');
+        }
+
+        return view('member', compact('toko'));
+    }
 
 
     public function destroy($id)

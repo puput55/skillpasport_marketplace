@@ -21,9 +21,16 @@ class Toko extends Model
         'id_user',
     ];
 
+        // Relasi ke USER
     public function user()
     {
-        return $this->belongsTo(User::class, 'id_user');
+        return $this->belongsTo(User::class, 'id_user', 'id');
+    }
+
+    // 🚀 INI YANG PALING PENTING !!
+    public function produks()
+    {
+        return $this->hasMany(Produk::class, 'id_toko', 'id_toko');
     }
 
 

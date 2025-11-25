@@ -94,10 +94,10 @@
         <!-- ================= INFO TOKO ================= -->
         <div class="row align-items-center">
             <div class="col-md-3 text-center">
-                <img
-                    src="{{ $toko->gambar ? asset('storage/gambar/' . $toko->gambar) : asset('storage/default.png') }}"
+               <img
+                    src="{{ $toko && $toko->gambar ? asset('storage/gambar/' . $toko->gambar) : asset('storage/default.png') }}"
                     class="toko-img-circle"
-                    alt="{{ $toko->nama_toko }}"
+                    alt="{{ $toko->nama_toko ?? 'Tidak ada toko' }}"
                 >
             </div>
 

@@ -7,6 +7,9 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
+    <!-- AOS Animation CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+
     <style>
         body {
             background-color: #014288;
@@ -39,16 +42,21 @@
 
 <body>
 <div class="container d-flex justify-content-center align-items-center" style="height:100vh;">
-    <div class="card col-md-4">
 
-        <h3 class="text-center mb-3">Registrasi Member</h3>
+    <!-- CARD + Animasi -->
+    <div class="card col-md-4" data-aos="zoom-in" data-aos-duration="900">
+
+        <!-- Judul + Animasi -->
+        <h3 class="text-center mb-3" data-aos="fade-down" data-aos-duration="800">
+            Registrasi Member
+        </h3>
 
         @if (session('success'))
-            <div class="alert alert-success">{{ session('success') }}</div>
+            <div class="alert alert-success" data-aos="fade-up">{{ session('success') }}</div>
         @endif
 
         @if ($errors->any())
-            <div class="alert alert-danger">
+            <div class="alert alert-danger" data-aos="fade-up">
                 <ul class="mb-0">
                     @foreach ($errors->all() as $error)
                         <li>{{ $error }}</li>
@@ -82,5 +90,12 @@
 
     </div>
 </div>
+
+<!-- AOS Script -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+<script>
+    AOS.init();
+</script>
+
 </body>
 </html>

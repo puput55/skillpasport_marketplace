@@ -36,7 +36,7 @@
     }
 
     .buy-btn {
-        background: #25D366; /* warna WA */
+        background: #25D366;
         color: white;
         border-radius: 8px;
         padding: 12px;
@@ -51,34 +51,39 @@
     }
 </style>
 
-<div class="container product-wrapper">
+<!-- Tambah AOS CSS -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+
+<div class="container product-wrapper" data-aos="fade-up">
 
     @php
-        // nomor WA tujuan
-        $waNumber = "6281234567890"; // ← ganti dengan nomor kamu
+        $waNumber = "6287786522103"; // nomor tujuan
 
-        // pesan otomatis
-        $message = "Halo, saya ingin membeli produk:%0A"
-                 . "*{$produk->nama_produk}*%0A"
-                 . "Harga: Rp " . number_format($produk->harga, 0, ',', '.') . "%0A"
-                 . "Link: " . url()->current();
+        // Format pesan checkout
+        $message =
+            "🛒 *Checkout Produk TISHOPKU*%0A"
+            . "--------------------------------%0A"
+            . "📌 *Nama Produk:* {$produk->nama_produk}%0A"
+            . "💰 *Harga:* Rp " . number_format($produk->harga, 0, ',', '.') . "%0A"
+            . "🏷️ *Kategori:* {$produk->kategori->nama_kategori}%0A"
+            . "🗓️ *Tanggal Upload:* " . $produk->created_at->format('d M Y') . "%0A"
+            . "--------------------------------%0A"
+            . "🔗 Link Produk:%0A" . url()->current() . "%0A%0A"
+            . "Saya ingin memesan produk ini.";
 
-        // URL WhatsApp final
         $waUrl = "https://wa.me/$waNumber?text=$message";
     @endphp
 
 
     <div class="row g-4">
 
-        {{-- ==================== GAMBAR PRODUK ==================== --}}
-        <div class="col-md-5">
+        <div class="col-md-5" data-aos="fade-right">
             <img src="{{ asset('storage/gambar/' . $produk->gambar_produk) }}"
                  alt="{{ $produk->nama_produk }}"
                  class="product-image">
         </div>
 
-        {{-- ==================== DETAIL PRODUK ==================== --}}
-        <div class="col-md-7">
+        <div class="col-md-7" data-aos="fade-left">
 
             <h2 class="product-title">{{ $produk->nama_produk }}</h2>
 
@@ -86,7 +91,11 @@
                 Rp {{ number_format($produk->harga, 0, ',', '.') }}
             </div>
 
-            <p class="mt-3 text-muted mb-1">
+            <p class="text-muted mb-2" style="font-size: 12px;">
+                Diunggah pada: {{ $produk->tanggal_upload }}
+            </p>
+
+            <p class="text-muted mb-1">
                 <i class="fa-solid fa-tag"></i>
                 Kategori: <b>{{ $produk->kategori->nama_kategori }}</b>
             </p>
@@ -98,17 +107,15 @@
 
             <hr>
 
-            {{-- ==================== DESKRIPSI ==================== --}}
             <h5 class="fw-bold mb-2">Deskripsi Produk</h5>
 
-            <div class="info-box mb-4">
+            <div class="info-box mb-4" data-aos="fade-up">
                 <p class="mb-0" style="white-space: pre-line;">
                     {{ $produk->deskripsi }}
                 </p>
             </div>
 
-            {{-- ==================== BUTTON BELI VIA WA ==================== --}}
-            <a href="{{ $waUrl }}" target="_blank" class="buy-btn text-center d-block">
+            <a href="{{ $waUrl }}" target="_blank" class="buy-btn text-center d-block" data-aos="zoom-in">
                 <i class="fa-brands fa-whatsapp me-2"></i> Beli Sekarang via WhatsApp
             </a>
 
@@ -116,11 +123,16 @@
 
     </div>
 
-    {{-- ==================== TOMBOL KEMBALI ==================== --}}
-    <a href="{{ route('produk.public') }}" class="btn btn-outline-secondary mt-4">
+    <a href="{{ route('produk.public') }}" class="btn btn-outline-secondary mt-4" data-aos="fade-up">
         <i class="fa-solid fa-arrow-left me-1"></i> Kembali ke Produk
     </a>
 
 </div>
+
+<!-- Tambah AOS SCRIPT -->
+{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+<script>
+    AOS.init();
+</script> --}}
 
 @endsection

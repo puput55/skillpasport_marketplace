@@ -38,7 +38,7 @@
     <div class="row g-4">
 
         {{-- HERO LEFT --}}
-        <div class="col-md-8 col-12">
+        <div class="col-md-8 col-12" data-aos="fade-right" data-aos-duration="1000">
             <div class="left-big">
                 <img src="{{ asset('storage/gambar/minum.png') }}" class="left-img">
                 <div class="left-text">
@@ -51,23 +51,23 @@
         </div>
 
         {{-- HERO RIGHT --}}
-        <div class="col-md-4 col-12 d-flex flex-column gap-4">
+        <div class="col-md-4 col-12 d-flex flex-column gap-4" data-aos="fade-left" data-aos-duration="1000">
 
-            <div class="right-img-box">
+            <div class="right-img-box" data-aos="zoom-in" data-aos-duration="900">
                 <img src="{{ asset('storage/gambar/snack.png') }}" class="right-img">
                 <div class="right-text">
                     <h5>Snack & Camilan</h5>
                     <p>Pilihan makanan ringan terbaik</p>
-                    <a href="{{ route('kategori.show', 1) }}" class="see-more">Lihat Selengkapnya →</a>
+                    <a href="{{ route('kategori.show', 2) }}" class="see-more">Lihat Selengkapnya →</a>
                 </div>
             </div>
 
-            <div class="right-img-box">
+            <div class="right-img-box" data-aos="zoom-in" data-aos-duration="900">
                 <img src="{{ asset('storage/gambar/roti.png') }}" class="right-img">
                 <div class="right-text">
                     <h5>Roti & Sarapan</h5>
                     <p>Mulai hari dengan yang enak</p>
-                    <a href="{{ route('kategori.show', 2) }}" class="see-more">Lihat Selengkapnya →</a>
+                    <a href="{{ route('kategori.show', 1) }}" class="see-more">Lihat Selengkapnya →</a>
                 </div>
             </div>
 
@@ -83,7 +83,6 @@
         <h4 class="fw-bold">Category</h4>
         <a href="{{ route('kategori.public') }}" class="link-see-all">
             Lihat Semua Kategori
-            <i class="fa-solid fa-arrow-right" style="margin-left:6px;"></i>
         </a>
     </div>
 
@@ -109,7 +108,7 @@
                 $bg   = $icons[$key][1] ?? $defaultIcon[1];
             @endphp
 
-            <div class="col-lg-2 col-md-3 col-6">
+            <div class="col-lg-2 col-md-3 col-6" data-aos="fade-up" data-aos-duration="800">
                 <a href="{{ route('kategori.show', $kategori->id_kategori) }}" class="text-decoration-none">
                     <div class="category-card">
                         <div class="category-icon" style="background: {{ $bg }};">{{ $icon }}</div>
@@ -126,13 +125,12 @@
     <h3 class="fw-bold">Produk Terbaru</h3>
     <a href="{{ route('produk.public') }}" class="link-see-all">
         Lihat Semua Produk
-        <i class="fa-solid fa-arrow-right" style="margin-left:6px;"></i>
     </a>
 </div>
 
 <div class="row g-4 mt-2">
     @foreach ($produksTerbaru as $p)
-    <div class="col-lg-2 col-md-3 col-6 product-item">
+    <div class="col-lg-2 col-md-3 col-6 product-item" data-aos="fade-up" data-aos-duration="900">
         <a href="{{ route('produk.show', $p->id_produk) }}" class="text-decoration-none text-dark">
             <div class="category-card">
                 <img src="{{ asset('storage/gambar/' . $p->gambar_produk) }}" class="product-latest-img mb-2">

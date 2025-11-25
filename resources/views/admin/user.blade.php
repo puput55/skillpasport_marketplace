@@ -40,6 +40,7 @@
                     <th>Username</th>
                     <th>Password</th>
                     <th>Role</th>
+                    <th>Status</th>
                     <th style="width: 180px;">Aksi</th>
                 </tr>
             </thead>

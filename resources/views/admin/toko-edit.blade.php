@@ -39,7 +39,7 @@
             <select name="id_user" class="form-control" required>
                 <option value="">-- Pilih Pemilik --</option>
                 @foreach($members as $member)
-                    <option value="{{ $member->id_user }}" {{ $toko->id_user == $member->id_user ? 'selected' : '' }}>
+                    <option value="{{ $member->id }}" {{ $toko->id_user == $member->id ? 'selected' : '' }}>
                         {{ $member->nama }} ({{ $member->username }})
                     </option>
                 @endforeach

@@ -88,9 +88,9 @@
             <i class="fa-solid fa-box-open"></i> Manajemen Produk
         </a> --}}
 
-        <a href="{{route('admin.gambar.index')}}">
+        {{-- <a href="{{route('admin.gambar.index')}}">
             <i class="fa-solid fa-image"></i> Gambar Produk
-        </a>
+        </a> --}}
 
         <a href="{{route('logout')}}" onclick="return confirm('Yakin ingin keluar?')">
             <i class="fa-solid fa-right-from-bracket"></i> Logout
@@ -110,7 +110,7 @@
         </a>
 
         <a href="{{route('member.produk.index')}}">
-            <i class="fa-solid fa-box-open"></i> Produk Saya
+            <i class="fa-solid fa-box-open"></i> Produk Member
         </a>
 
         <a href="{{route('logout')}}">

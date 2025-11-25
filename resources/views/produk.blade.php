@@ -52,41 +52,41 @@
     }
 </style>
 
-
 <div class="container py-4">
 
-    <h2 class="fw-bold mb-4 text-center">Semua Produk</h2>
+    <h2 class="fw-bold mb-4 text-center" data-aos="fade-down">
+        Semua Produk
+    </h2>
 
     <div class="row g-4">
 
         @foreach ($produks as $produk)
-        <div class="col-6 col-md-4 col-lg-3">
+        <div class="col-6 col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="{{ $loop->index * 100 }}">
 
             <div class="product-card">
 
-                {{-- Gambar produk --}}
                 <img src="{{ asset('storage/gambar/' . $produk->gambar_produk) }}"
                      class="product-image"
                      alt="{{ $produk->nama_produk }}">
 
                 <div class="p-3">
 
-                    {{-- Nama Produk --}}
                     <div class="product-title">
                         {{ $produk->nama_produk }}
                     </div>
 
-                    {{-- Harga --}}
                     <div class="product-price mb-2">
                         Rp {{ number_format($produk->harga, 0, ',', '.') }}
                     </div>
 
-                    {{-- Kategori --}}
-                    <p class="text-muted mb-2" style="font-size: 13px;">
+                    <p class="text-muted mb-1" style="font-size: 13px;">
                         {{ $produk->kategori->nama_kategori }}
                     </p>
 
-                    {{-- Tombol Detail --}}
+                    <p class="text-muted mb-2" style="font-size: 12px;">
+                        Diunggah pada: {{ $produk->tanggal_upload }}
+                    </p>
+
                     <a href="{{ route('produk.show', $produk->id_produk) }}"
                         class="btn-detail text-center">
                         Lihat Produk

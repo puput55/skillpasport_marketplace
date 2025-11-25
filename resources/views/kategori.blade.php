@@ -71,7 +71,7 @@
                 $bg   = $icons[$key][1] ?? $defaultIcon[1];
             @endphp
 
-            <div class="col-3">
+            <div class="col-3"  data-aos="fade-down">
                 <a href="{{ route('kategori.show', $k->id_kategori) }}" class="text-decoration-none">
                     <div class="category-card">
                         <div class="category-icon" style="background: {{ $bg }};">
